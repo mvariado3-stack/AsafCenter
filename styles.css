@@ -1,0 +1,71 @@
+/* styles.css — elegante, responsive y con animaciones suaves */
+
+/* Reset / base */
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,Arial; background:linear-gradient(#f7fbff,#f4f7fb); color:#0b1a2b}
+.hidden{display:none}
+.center{display:flex;align-items:center;justify-content:center;height:100vh}
+.container{max-width:1100px;margin:20px auto;padding:18px}
+
+/* Card */
+.card{background:#fff;border-radius:12px;padding:18px;box-shadow:0 8px 28px rgba(6,14,28,0.06);transition:transform .18s ease,box-shadow .18s ease}
+.card:hover{transform:translateY(-4px)}
+.narrow{max-width:420px;margin:0 auto}
+
+/* Topbar */
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:18px;background:linear-gradient(180deg,#fff,#fbfdff);box-shadow:0 6px 22px rgba(6,14,28,0.04)}
+.topbar h2{margin:0;font-family:Playfair, serif;font-weight:700}
+.top-actions{display:flex;gap:10px;align-items:center}
+.top-actions input{padding:10px 12px;border-radius:10px;border:1px solid #e6eef9}
+
+/* Panels */
+.container{display:flex;gap:18px;align-items:flex-start}
+.panel{flex:1}
+.left{max-width:420px}
+.right{flex:2}
+
+/* Forms */
+.form label{display:block;margin-top:10px;color:#5b6b7a;font-size:0.92rem}
+input,textarea,select{width:100%;padding:10px;border-radius:8px;border:1px solid #e6eef9;margin-top:6px;background:linear-gradient(#fff,#fbfdff);font-size:0.95rem}
+textarea{min-height:90px;resize:vertical}
+.row{display:flex;gap:8px;align-items:center}
+.btn{padding:10px 14px;border-radius:10px;border:none;background:#2b6cf6;color:#fff;cursor:pointer;font-weight:700;box-shadow:0 8px 20px rgba(43,108,246,0.12);transition:transform .16s ease}
+.btn.ghost{background:transparent;color:#31415a;box-shadow:none;border:1px solid rgba(10,20,40,0.04)}
+.btn.small{padding:8px 10px;font-size:0.9rem}
+
+/* Messages */
+.msg{color:#d23b3b;font-weight:600;margin-top:8px}
+.muted{color:#6b7280}
+
+/* Patients list */
+.list{display:flex;flex-direction:column;gap:12px;max-height:60vh;overflow:auto;padding-right:6px}
+.patient{padding:12px;border-radius:10px;background:linear-gradient(#fff,#fdfeff);border:1px solid #eef4ff;display:flex;flex-direction:column;transition:transform .2s cubic-bezier(.16,.9,.3,1)}
+.patient:hover{transform:translateY(-4px)}
+.patient .header{display:flex;justify-content:space-between;align-items:center}
+.patient strong{font-size:1rem}
+.patient .meta{color:#5b6b7a;font-size:0.9rem;margin-top:6px}
+.actions{display:flex;gap:8px;align-items:center;margin-top:8px}
+.actions button{padding:6px 10px;border-radius:8px;border:none;cursor:pointer}
+.actions .edit{background:linear-gradient(90deg,#7c3aed,#2563eb);color:#fff}
+.actions .del{background:#ef4444;color:#fff}
+.actions .view{background:#e2e8f0;color:#10223b}
+
+/* Detail */
+#detailCard img{max-width:160px;border-radius:8px;box-shadow:0 12px 36px rgba(2,6,23,0.06);margin-top:10px}
+.historyList{display:flex;flex-direction:column;gap:8px;max-height:180px;overflow:auto;margin-top:6px}
+.historyItem{padding:8px;border-radius:8px;background:#fbfdff;border:1px solid #eef2ff}
+
+/* Footer */
+.footer{padding:12px;text-align:center;color:#6b7280;font-size:0.9rem;margin-top:16px}
+
+/* Animations */
+.fade{animation:fadeIn .45s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* Responsive */
+@media (max-width:900px){
+  .container{flex-direction:column;padding:12px}
+  .left{max-width:100%}
+  .top-actions{flex-direction:column;align-items:flex-end}
+  #detailCard{order:3}
+}

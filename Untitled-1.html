@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centro de Rehabilitación "Asaf"</title>
+
+    <style>
+        /* --- Variables de Color y Estilo --- */
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e67e22;
+            --light-color: #ecf0f1;
+            --dark-color: #34495e;
+            --success-color: #2ecc71;
+            --danger-color: #e74c3c;
+            --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* --- Estilos Globales --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--font-family);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--dark-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: var(--light-color);
+            padding: 1rem 2rem;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        main {
+            flex-grow: 1;
+            padding: 2rem;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        #login-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 60vh;
+        }
+
+        .login-container {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .btn {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn:hover { background-color: #2980b9; }
+
+        /* --- Sección Pacientes --- */
+        #patients-section { display: none; }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        /* Modal Genérico */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(2px);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        label { font-weight: bold; margin-top: 10px; display: block; }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 4px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 0.8rem; border-bottom: 1px solid #ddd; }
+
+        .delete-btn {
+            background-color: var(--danger-color);
+            padding: 5px 10px;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+        }
+        .delete-btn:hover { background-color: #c0392b; }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Centro de Rehabilitación "Asaf"</h1>
+    <p>Un camino hacia una nueva vida</p>
+</header>
+
+<main>
+
+    <!-- LOGIN -->
+    <section id="login-section">
+        <div class="login-container">
+            <h2>Acceso al Portal</h2>
+            <form id="login-form">
+                <label>Contraseña</label>
+                <input type="password" id="password">
+                <button class="btn">Entrar</button>
+                <p id="error-message" style="color:red; display:none;">Contraseña incorrecta</p>
+            </form>
+        </div>
+    </section>
+
+    <!-- PACIENTES -->
+    <section id="patients-section">
+        <div class="section-header">
+            <h2>Pacientes Registrados</h2>
+            <div style="display:flex; gap:10px;">
+                <button id="add-patient-btn" class="btn">Agregar Paciente</button>
+                <button id="logout-btn" class="btn">Cerrar Sesión</button>
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th><th>Nombre</th><th>Ingreso</th><th>Adicción</th><th>Estado</th><th>Responsable</th><th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="patients-table-body"></tbody>
+        </table>
+    </section>
+
+</main>
+
+<!-- MODAL AGREGAR PACIENTE -->
+<div id="add-modal" class="modal">
+    <div class="modal-content">
+        <h3>Agregar Paciente</h3>
+        <label>Nombre Completo</label><input id="new-name">
+        <label>Fecha de Ingreso</label><input type="date" id="new-date">
+        <label>Adicción</label><input id="new-addiction">
+        <label>Estado</label>
+        <select id="new-status">
+            <option value="activo">Activo</option>
+            <option value="en-evaluacion">En evaluación</option>
+            <option value="alta">Alta</option>
+        </select>
+        <label>Responsable</label><input id="new-resp">
+
+        <button class="btn" onclick="addPatient()">Guardar</button>
+        <button class="btn" style="background:#7f8c8d" onclick="closeAddModal()">Cancelar</button>
+    </div>
+</div>
+
+<!-- MODAL ELIMINAR -->
+<div id="delete-modal" class="modal">
+    <div class="modal-content">
+        <h3>Eliminar Paciente</h3>
+        <p>Ingrese la contraseña de administrador:</p>
+        <input type="password" id="delete-pass">
+        <button class="btn" onclick="deletePatient()">Eliminar</button>
+        <button class="btn" style="background:#7f8c8d" onclick="closeDeleteModal()">Cancelar</button>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    const CORRECT_PASSWORD = "Ministeriovientos25";
+    const ADMIN_PASSWORD = "Administrador2025";
+
+    const loginSection = document.getElementById("login-section");
+    const patientsSection = document.getElementById("patients-section");
+    const loginForm = document.getElementById("login-form");
+    const passwordInput = document.getElementById("password");
+    const errMsg = document.getElementById("error-message");
+
+    const tableBody = document.getElementById("patients-table-body");
+
+    let patientToDelete = null;
+
+    let patients = [
+        {id:"P-001",name:"Ana María",admissionDate:"2024-10-15",addiction:"Alcohol",status:"activo",responsible:"Dr. Ruiz"},
+        {id:"P-002",name:"Luis Torres",admissionDate:"2024-11-01",addiction:"Cocaína",status:"en-evaluacion",responsible:"Dra. Morales"}
+    ];
+
+    loginForm.addEventListener("submit", e=>{
+        e.preventDefault();
+        if(passwordInput.value === CORRECT_PASSWORD){
+            loginSection.style.display="none";
+            patientsSection.style.display="block";
+            loadTable();
+        } else {
+            errMsg.style.display="block";
+            setTimeout(()=>errMsg.style.display="none",3000);
+        }
+    });
+
+    document.getElementById("logout-btn").onclick = ()=>{
+        patientsSection.style.display="none";
+        loginSection.style.display="flex";
+        passwordInput.value="";
+    };
+
+    function loadTable(){
+        tableBody.innerHTML="";
+        patients.forEach(p=>{
+            let row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${p.id}</td>
+                <td>${p.name}</td>
+                <td>${p.admissionDate}</td>
+                <td>${p.addiction}</td>
+                <td>${p.status}</td>
+                <td>${p.responsible}</td>
+                <td><span class="delete-btn" onclick="confirmDelete('${p.id}')">Eliminar</span></td>
+            `;
+            tableBody.appendChild(row);
+        });
+    }
+
+    // ----- MODAL AGREGAR -----
+    const addModal = document.getElementById("add-modal");
+
+    document.getElementById("add-patient-btn").onclick = ()=> addModal.style.display="flex";
+    function closeAddModal(){ addModal.style.display="none"; }
+
+    window.closeAddModal = closeAddModal;
+
+    window.addPatient = ()=>{
+        let name = document.getElementById("new-name").value;
+        let date = document.getElementById("new-date").value;
+        let add = document.getElementById("new-addiction").value;
+        let status = document.getElementById("new-status").value;
+        let resp = document.getElementById("new-resp").value;
+
+        if(!name || !date || !add || !resp){
+            alert("Complete todos los campos.");
+            return;
+        }
+
+        let newId = "P-" + String(patients.length+1).padStart(3,"0");
+
+        patients.push({
+            id:newId,
+            name,
+            admissionDate:date,
+            addiction:add,
+            status,
+            responsible:resp
+        });
+
+        loadTable();
+        closeAddModal();
+    };
+
+    // ----- MODAL ELIMINAR -----
+    const deleteModal = document.getElementById("delete-modal");
+
+    window.confirmDelete = (id)=>{
+        patientToDelete = id;
+        deleteModal.style.display="flex";
+    };
+
+    function closeDeleteModal(){
+        deleteModal.style.display="none";
+        document.getElementById("delete-pass").value="";
+    }
+    window.closeDeleteModal = closeDeleteModal;
+
+    window.deletePatient = ()=>{
+        let pass = document.getElementById("delete-pass").value;
+
+        if(pass !== ADMIN_PASSWORD){
+            alert("Contraseña incorrecta");
+            return;
+        }
+
+        patients = patients.filter(p=>p.id !== patientToDelete);
+        loadTable();
+        closeDeleteModal();
+    };
+
+});
+</script>
+
+</body>
+</html>
